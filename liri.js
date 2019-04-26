@@ -53,8 +53,9 @@ function concertThis() {
 
             for (var i = 0; i < response.data.length; i++) {
 
-               var info = response.data[i].lineup + " Concert" + "\nVenue: " + response.data[i].venue.name + "\nLocation: " + response.data[i].venue.city + ", " + response.data[i].venue.region + ", " + response.data[i].venue.country + "\nDate: " + moment(response.data[i].datetime).format("MM/DD/YYYY");
+               info = response.data[i].lineup + " Concert" + "\nVenue: " + response.data[i].venue.name + "\nLocation: " + response.data[i].venue.city + ", " + response.data[i].venue.region + ", " + response.data[i].venue.country + "\nDate: " + moment(response.data[i].datetime).format("MM/DD/YYYY");
                 console.log("\n" + info + "\n" + space + "\n" + divider);
+                writeLog();
 
             }
 
@@ -83,10 +84,9 @@ function movieThis() {
     axios.get(queryUrl).then(
         function (response) {
 
-            var info = "Title " + response.data.Title + "\nRelease Year " + response.data.Year + "\nIMdB Rating: " + response.data.imdbRating + "\nCountry: " + response.data.Country + "\nLanguage: " + response.data.Language + "\nPlot: " + response.data.Plot + "\nActors: " + response.data.Actors + "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value;
+            info = "Title " + response.data.Title + "\nRelease Year " + response.data.Year + "\nIMdB Rating: " + response.data.imdbRating + "\nCountry: " + response.data.Country + "\nLanguage: " + response.data.Language + "\nPlot: " + response.data.Plot + "\nActors: " + response.data.Actors + "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value;
             console.log("\n" + info + "\n" + space + "\n" + divider);
-            writeLog(info, input);
-
+            writeLog();
         },
     );
 
@@ -105,8 +105,9 @@ function spotifyThisSong() {
 
                 var song = response.tracks.items[i];
 
-                var info = "Artist: " + song.artists[0].name + "\nSong: " + song.name + "\nAlbum: " + song.album.name + "\nLink to preview the song: " + song.preview_url;
+                info = "Artist: " + song.artists[0].name + "\nSong: " + song.name + "\nAlbum: " + song.album.name + "\nLink to preview the song: " + song.preview_url;
                 console.log("\n" + info + "\n" + space + "\n" + divider);
+                writeLog();
             }
         })
         .catch(function (err) {
@@ -131,6 +132,7 @@ function doThis() {
         } else if (dataArr[0] === "concert-this") {
             concertThis();
         }
+        writeLog();
 
     });
 }
@@ -138,7 +140,7 @@ function doThis() {
 function writeLog() {
 
     var date = Date();
-    fs.appendFile("log.txt", "\n" + space + "\n" + date + "\n" + action + "\n" + input + "\n" + space + + "\n" + divider, function (err) {
+    fs.appendFile("log.txt", "\n" + space + "\n" + date +"\n" + action + ": " + input + "\n" + info + "\n" + space + "\n" + divider, function (err) {
 
         if (err) {
             return console.log(err);
@@ -148,5 +150,3 @@ function writeLog() {
     console.log("log.txt was updated!");
 
 };
-
-writeLog();
